@@ -1,0 +1,15 @@
+{
+  "name": "prexzy-ai-studio",
+  "version": "1.0.0",
+  "description": "AI Multi-Tool powered by Prexzy API",
+  "scripts": {
+    "dev": "vercel dev",
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "node-fetch": "^3.3.2"
+  },
+  "engines": {
+    "node": "18.x"
+  }
+}
