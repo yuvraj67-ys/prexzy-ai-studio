@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Prexzy AI Studio</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar-logo">🚀 Prexzy Studio</div>
+    <div class="nav-item active" data-tab="tab-chat"><span class="icon">🤖</span> AI Chat</div>
+    <div class="nav-item" data-tab="tab-image"><span class="icon">🖼️</span> Image Generator</div>
+    <div class="nav-item" data-tab="tab-dl"><span class="icon">📥</span> Downloader</div>
+    <div class="nav-item" data-tab="tab-tts"><span class="icon">🎙️</span> Text to Speech</div>
+    <div class="nav-item" data-tab="tab-anime"><span class="icon">🎌</span> Anime & GIFs</div>
+    <div class="nav-item" data-tab="tab-quiz"><span class="icon">🎮</span> Quiz Game</div>
+    <div class="nav-item" data-tab="tab-meme"><span class="icon">🎭</span> Meme Creator</div>
+    <div class="nav-item" data-tab="tab-movies"><span class="icon">🎬</span> Movies</div>
+  </aside>
+
+  <!-- BOTTOM TABS (Mobile) -->
+  <nav class="bottom-tabs">
+    <div class="bottom-tab active" data-tab="tab-chat"><span class="icon">🤖</span><span>Chat</span></div>
+    <div class="bottom-tab" data-tab="tab-image"><span class="icon">🖼️</span><span>Image</span></div>
+    <div class="bottom-tab" data-tab="tab-dl"><span class="icon">📥</span><span>DL</span></div>
+    <div class="bottom-tab" data-tab="tab-tts"><span class="icon">🎙️</span><span>TTS</span></div>
+    <div class="bottom-tab" data-tab="tab-anime"><span class="icon">🎌</span><span>Anime</span></div>
+    <div class="bottom-tab" data-tab="tab-quiz"><span class="icon">🎮</span><span>Quiz</span></div>
+    <div class="bottom-tab" data-tab="tab-meme"><span class="icon">🎭</span><span>Meme</span></div>
+    <div class="bottom-tab" data-tab="tab-movies"><span class="icon">🎬</span><span>Movies</span></div>
+  </nav>
+
+  <!-- MAIN CONTENT -->
+  <main class="main">
+
+    <!-- 🤖 TAB 1: AI CHAT -->
+    <div id="tab-chat" class="page active">
+      <h1 class="page-title">AI Chat</h1>
+      <p class="page-subtitle">Chat with powerful AI models</p>
+      
+      <div class="card" style="display:flex; flex-direction:column; height: 75vh;">
+        <div style="display:flex; justify-content:space-between; margin-bottom:16px;">
+          <select id="modelSelect" style="max-width:300px;">
+            <option value="chatgpt">ChatGPT</option>
+            <option value="claude">Claude AI</option>
+            <option value="gpt4">GPT-4</option>
+            <option value="gpt5">GPT-5</option>
+            <option value="copilot">Microsoft Copilot</option>
+            <option value="copilotdeep">Copilot Deep Think</option>
+            <option value="deepseek">DeepSeek Chat</option>
+            <option value="deepseekr">DeepSeek Reasoner</option>
+            <option value="llama4">Llama 4</option>
+            <option value="mistral">Mistral</option>
+            <option value="qwq">QWQ 32B</option>
+            <option value="story">Story AI</option>
+            <option value="dream">Dream Interpreter</option>
+            <option value="summarize">Summarizer</option>
+            <option value="logical">Logical AI</option>
+            <option value="creative">Creative AI</option>
+          </select>
+          <button class="btn-primary" style="width:auto; padding:8px 16px;" onclick="clearChat()">Clear Chat</button>
+        </div>
+        
+        <div id="chatBox" class="chat-container"></div>
+        
+        <div style="display:flex; gap:10px; margin-top:16px;">
+          <input type="text" id="chatInput" placeholder="Type your message..." onkeypress="if(event.key==='Enter') sendAIMessage()">
+          <button class="btn-primary" style="width:100px;" onclick="sendAIMessage()">Send</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 🖼️ TAB 2: IMAGE GENERATOR -->
+    <div id="tab-image" class="page">
+      <h1 class="page-title">Image Generator</h1>
+      <p class="page-subtitle">Create stunning AI images in various styles</p>
+      
+      <div class="card">
+        <div class="style-grid" id="styleGrid">
+          <!-- Populated by JS -->
+        </div>
+        <input type="text" id="imgPrompt" placeholder="Describe the image you want..." style="margin-bottom:12px;">
+        <input type="text" id="imgNegative" placeholder="Negative prompt (Optional - what to avoid)" style="margin-bottom:16px;">
+        <button class="btn-primary" onclick="generateImage()">✨ Generate Image</button>
+      </div>
+      <div id="imgResult" style="text-align:center; margin-top:20px;"></div>
+    </div>
+
+    <!-- 📥 TAB 3: DOWNLOADER -->
+    <div id="tab-dl" class="page">
+      <h1 class="page-title">Media Downloader</h1>
+      <p class="page-subtitle">Download videos and audio from any platform</p>
+      
+      <div class="card">
+        <input type="url" id="dlUrl" placeholder="Paste link here (e.g., YouTube, TikTok, Instagram)..." style="margin-bottom:16px;">
+        <div class="style-grid" id="dlPlatforms" style="grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));">
+          <!-- Populated by JS -->
+        </div>
+        <button class="btn-primary" onclick="downloadMedia()" style="margin-top:10px;">⬇️ Fetch Download Links</button>
+      </div>
+      <div id="dlResult" style="margin-top:20px;"></div>
+    </div>
+
+    <!-- 🎙️ TAB 4: TTS -->
+    <div id="tab-tts" class="page">
+      <h1 class="page-title">Text to Speech</h1>
+      <p class="page-subtitle">Convert text into lifelike speech</p>
+      
+      <div class="card">
+        <textarea id="ttsText" rows="4" placeholder="Enter text to convert to speech..."></textarea>
+        
+        <div style="display:flex; gap:16px; margin:16px 0; flex-wrap:wrap;">
+          <select id="ttsVoice" style="flex:1; min-width:200px;">
+            <option value="aria">Aria (Female)</option>
+            <option value="jenny">Jenny (Female)</option>
+            <option value="guy">Guy (Male)</option>
+            <option value="davis">Davis (Male)</option>
+            <option value="jane">Jane (Female)</option>
+            <option value="jason">Jason (Male)</option>
+            <option value="sara">Sara (Female)</option>
+            <option value="brian">Brian (Male)</option>
+            <option value="emma">Emma (Female)</option>
+            <option value="andrew">Andrew (Male)</option>
+            <option value="michelle">Michelle (Female)</option>
+            <option value="charlie">Charlie (Male)</option>
+          </select>
+          <div style="flex:1; min-width:200px;">
+            <label style="font-size:12px; color:var(--text-muted);">Speed (0.5x - 2.0x)</label>
+            <input type="range" id="ttsSpeed" min="0.5" max="2.0" step="0.1" value="1.0" style="padding:0; height:4px;">
+          </div>
+        </div>
+        <button class="btn-primary" onclick="generateTTS()">🔊 Convert to Audio</button>
+      </div>
+      <div id="ttsResult" style="text-align:center; margin-top:20px;"></div>
+    </div>
+
+    <!-- 🎌 TAB 5: ANIME -->
+    <div id="tab-anime" class="page">
+      <h1 class="page-title">Anime Studio</h1>
+      <p class="page-subtitle">Search anime and discover fun GIFs</p>
+      
+      <div style="display:flex; gap:10px; margin-bottom:20px;">
+        <button class="btn-primary sub-tab-btn" onclick="switchAnimeTab('search')" style="flex:1;">🔍 Search Anime</button>
+        <button class="btn-primary sub-tab-btn" onclick="switchAnimeTab('gif')" style="flex:1; background:rgba(255,255,255,0.1);">🎬 Random GIFs</button>
+      </div>
+
+      <div id="animeSearchTab" class="card">
+        <div style="display:flex; gap:10px; margin-bottom:16px;">
+          <input type="text" id="animeQuery" placeholder="Search anime title..." onkeypress="if(event.key==='Enter') searchAnime()">
+          <button class="btn-primary" style="width:100px;" onclick="searchAnime()">Search</button>
+        </div>
+        <div id="animeResult" class="grid-container"></div>
+      </div>
+
+      <div id="animeGifTab" class="card" style="display:none;">
+        <p style="margin-bottom:16px;">Click an action to get a random GIF!</p>
+        <div class="gif-buttons" id="gifButtonsGrid">
+          <!-- Populated by JS -->
+        </div>
+        <div id="gifResult" style="text-align:center; margin-top:20px;"></div>
+      </div>
+    </div>
+
+    <!-- 🎮 TAB 6: QUIZ -->
+    <div id="tab-quiz" class="page">
+      <h1 class="page-title">AI Quiz Game</h1>
+      <p class="page-subtitle">Test your knowledge</p>
+      
+      <div class="card">
+        <div class="score-bar">
+          <select id="quizLevel" style="width:150px;">
+            <option value="easy">Easy</option>
+            <option value="medium">Medium</option>
+            <option value="hard">Hard</option>
+          </select>
+          <select id="quizType" style="width:150px;">
+            <option value="guess">Guess</option>
+            <option value="truefalse">True/False</option>
+            <option value="random">Random</option>
+          </select>
+          <div class="score-badge">Score: <span id="quizScore">0</span></div>
+        </div>
+        
+        <button class="btn-primary" onclick="loadQuiz()" id="startQuizBtn">Start Quiz</button>
+        
+        <div id="quizContainer" style="display:none; margin-top:20px;">
+          <h3 id="questionText" style="margin-bottom:16px; font-size:18px;"></h3>
+          <div id="optionsGrid" style="display:grid; gap:10px;"></div>
+          <button class="btn-primary" onclick="loadQuiz()" style="margin-top:20px; display:none;" id="nextQuizBtn">Next Question</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 🎭 TAB 7: MEME CREATOR -->
+    <div id="tab-meme" class="page">
+      <h1 class="page-title">Meme & Image Creator</h1>
+      <p class="page-subtitle">Generate custom memes and text images</p>
+      
+      <div class="card">
+        <select id="memeType" style="margin-bottom:16px;" onchange="toggleMemeInputs()">
+          <option value="meme">Classic Meme</option>
+          <option value="textimage">Text on Image</option>
+          <option value="gif">Text to GIF</option>
+          <option value="spongebob">SpongeBob Mocking</option>
+          <option value="ttp">Text to Picture (TTP)</option>
+        </select>
+
+        <div id="memeInputs">
+          <input type="text" id="memeTop" placeholder="Top Text" style="margin-bottom:12px;">
+          <input type="text" id="memeBottom" placeholder="Bottom Text" style="margin-bottom:12px;">
+        </div>
+        
+        <div id="singleTextInput" style="display:none;">
+          <input type="text" id="memeSingleText" placeholder="Enter text..." style="margin-bottom:12px;">
+          <div style="display:flex; gap:16px; margin-bottom:12px;">
+            <div style="flex:1">
+              <label style="font-size:12px; color:var(--text-muted);">Background Color</label>
+              <input type="color" id="memeBg" value="#000000" style="padding:4px; height:40px;">
+            </div>
+            <div style="flex:1">
+              <label style="font-size:12px; color:var(--text-muted);">Text Color</label>
+              <input type="color" id="memeColor" value="#ffffff" style="padding:4px; height:40px;">
+            </div>
+          </div>
+        </div>
+
+        <button class="btn-primary" onclick="generateMeme()">🎨 Create</button>
+      </div>
+      <div id="memeResult" style="text-align:center; margin-top:20px;"></div>
+    </div>
+
+    <!-- 🎬 TAB 8: MOVIES -->
+    <div id="tab-movies" class="page">
+      <h1 class="page-title">Movie Search</h1>
+      <p class="page-subtitle">Find movies and details</p>
+      
+      <div class="card">
+        <div style="display:flex; gap:10px; margin-bottom:16px;">
+          <input type="text" id="movieQuery" placeholder="Search for a movie..." onkeypress="if(event.key==='Enter') searchMovies()">
+          <button class="btn-primary" style="width:100px;" onclick="searchMovies()">Search</button>
+        </div>
+        <div id="movieResult" class="grid-container"></div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- MODAL -->
+  <div id="appModal" class="modal">
+    <div class="modal-content">
+      <span class="modal-close" onclick="closeModal()">×</span>
+      <div id="modalBody"></div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
